@@ -96,8 +96,8 @@ public class CreateIntegration {
     }
 
     public static void clientInit(FMLClientSetupEvent event) {
-        ScreenManager.register(ModBlocks.ENDER_CONTAINER, EnderGui::new);
-        RenderTypeLookup.setRenderLayer(ModBlocks.CHUNK_LOADER, RenderType.translucent());
+        ScreenManager.registerFactory(ModBlocks.ENDER_CONTAINER, EnderGui::new);
+        RenderTypeLookup.setRenderLayer(ModBlocks.CHUNK_LOADER, RenderType.getTranslucent());
         registerRenderers();
     }
 
@@ -120,7 +120,7 @@ public class CreateIntegration {
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void attachWorldCaps(AttachCapabilitiesEvent<World> event) {
-        if (!event.getObject().isClientSide) return;
+        if (event.getObject().isRemote) return;
         final LazyOptional<IChunkLoaderList> loaderInst = LazyOptional.of(() -> new ChunkLoaderList((ServerWorld) event.getObject()));
         final ICapabilitySerializable<INBT> loadingCapability = new ICapabilitySerializable<INBT>() {
             @Override
@@ -187,7 +187,7 @@ public class CreateIntegration {
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void onServerStarted(FMLServerStartedEvent event) {
-        event.getServer().getAllLevels().forEach(world ->
+        event.getServer().getWorlds().forEach(world ->
                 world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(IChunkLoaderList::start)
         );
     }
@@ -198,7 +198,7 @@ public class CreateIntegration {
         @SuppressWarnings("unused")
         public static void registerItems(final RegistryEvent.Register<Item> event) {
             logger.info("items registering");
-            Item.Properties properties = new Item.Properties().tab(ModSetup.itemGroup);
+            Item.Properties properties = new Item.Properties().group(ModSetup.itemGroup);
 
             event.getRegistry().register(new BlockItem(ModBlocks.CHUNK_LOADER, properties).setRegistryName("chunk_loader"));
             event.getRegistry().register(new BlockItem(ModBlocks.ENDER_CRATE, properties).setRegistryName("ender_crate"));
@@ -218,8 +218,8 @@ public class CreateIntegration {
         @SuppressWarnings("unused")
         public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> event) {
             logger.info("TEs registering");
-            event.getRegistry().register(TileEntityType.Builder.of(ChunkLoaderTile::new, ModBlocks.CHUNK_LOADER).build(null).setRegistryName("chunk_loader"));
-            event.getRegistry().register(TileEntityType.Builder.of(EnderCrateTile::new, ModBlocks.ENDER_CRATE).build(null).setRegistryName("ender_crate"));
+            event.getRegistry().register(TileEntityType.Builder.create(ChunkLoaderTile::new, ModBlocks.CHUNK_LOADER).build(null).setRegistryName("chunk_loader"));
+            event.getRegistry().register(TileEntityType.Builder.create(EnderCrateTile::new, ModBlocks.ENDER_CRATE).build(null).setRegistryName("ender_crate"));
             logger.info("finished TEs registering");
         }
 
@@ -229,7 +229,7 @@ public class CreateIntegration {
         public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
             event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
                 BlockPos pos = data.readBlockPos();
-                return new EnderContainer(windowId, Minecraft.getInstance().level, pos, inv);
+                return new EnderContainer(windowId, Minecraft.getInstance().world, pos, inv);
             }).setRegistryName("ender_crate"));
         }
     }

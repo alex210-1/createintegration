@@ -3,24 +3,28 @@ buildscript {
         maven { url = 'https://files.minecraftforge.net/maven' }
         jcenter()
         mavenCentral()
-        maven { url='https://repo.spongepowered.org/repository/maven-public/' }
+        maven {url='https://repo.spongepowered.org/maven'}
+        maven { url='https://dist.creeper.host/Sponge/maven' }
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
-plugins {
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
-}
 apply plugin: 'net.minecraftforge.gradle'
+
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
+apply plugin: 'org.spongepowered.mixin'
 
-version = '1.0'
-group = 'de.bytearray.create-integration-redux' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'create-integration-redux'
+mixin {
+    add sourceSets.main, "createintegrationredux.refmap.json"
+}
+
+version = "mc${minecraft_version}_v${mod_version}"
+group = "de.bytearray.${mod_id}"
+archivesBaseName = "${mod_id}"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8) // Mojang ships Java 8 to end users, so your mod should target Java 8.
 
@@ -37,8 +41,11 @@ minecraft {
     //
     // Use non-default mappings at your own risk. they may not always work.
     // Simply re-run your setup task after changing the mappings to update your workspace.
-    mappings channel: 'snapshot', version: '20200920-mixed-1.16.3'
-    // mappings channel: 'official', version: '1.16.5'
+    // mappings channel: 'snapshot', version: '20200920-mixed-1.16.3'
+    // mappings channel: 'official', version: '1.16.3'
+    // mappings channel: 'snapshot', version: '20200920-mixed-1.16.3'
+    // mappings channel: 'snapshot', version: '20201028-1.16.3'
+    mappings channel: 'snapshot', version:  '20200920-mixed-1.16.3'
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
@@ -129,10 +136,11 @@ repositories {
         name = "tterrag maven"
         url = "https://maven.tterrag.com/"
     }
-}
-
-configurations {
-    shade
+    maven {
+        // location of the maven that hosts JEI files (And TiC)
+        name "Progwml6 maven"
+        url "https://dvs1.progwml6.com/files/maven/"
+    }
 }
 
 dependencies {
@@ -140,7 +148,8 @@ dependencies {
     // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     // minecraft 'net.minecraftforge:forge:1.16.5-36.1.0'
-    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    // minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    // minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"
@@ -167,7 +176,12 @@ dependencies {
 
     // compile 'curse.maven:jei-238222:3346971'
     // implementation fg.deobf('curse.maven:create-328085:3278516')
-    compile 'curse.maven:create-328085:3278516'
+    // compile 'curse.maven:create-328085:3278516'
+    // implementation fg.deobf("curse.maven:create-328085:3260165")
+
+    minecraft 'net.minecraftforge:forge:1.16.5-36.1.0'
+
+    implementation fg.deobf("curse.maven:create-328085:3278516")
 }
 
 jar {
