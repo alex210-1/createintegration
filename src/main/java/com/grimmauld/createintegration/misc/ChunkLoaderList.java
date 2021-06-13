@@ -23,7 +23,7 @@ public class ChunkLoaderList implements IChunkLoaderList {
     private final ServerWorld world;
 
 
-    public HashMap<iVec2d, Integer> loadedchunks;
+    public HashMap<Vector2i, Integer> loadedchunks;
     public ArrayList<BlockPos> chunkloaderblocks;
 
     private boolean enabled = false;
@@ -34,9 +34,6 @@ public class ChunkLoaderList implements IChunkLoaderList {
         chunkloaderblocks=new ArrayList<>();//could be replaced with hashset
     }
 
-    /*public static long toChunk(BlockPos pos) {
-        return ChunkPos.asLong(pos.getX() >> 4, pos.getZ() >> 4);
-    }*/
     /** loads chunk containing the blockpos */
     private void force(BlockPos pos) {
         forceload(pos, "add");
@@ -49,16 +46,17 @@ public class ChunkLoaderList implements IChunkLoaderList {
     private void forceload(BlockPos pos, String action) {
         if (this.world == null) return;
 
-        CommandSource source = (this.world.getServer().getCommandSource().withWorld(this.world));
+        // TODO not sure whether createCommandSourceStack is correct
+        CommandSource source = (this.world.getServer().createCommandSourceStack().withLevel(this.world));
         if (!Config.CHUNK_CHAT.get()) {
-            source = source.withFeedbackDisabled();
+            source = source.withSuppressedOutput(); // withFeedbackDisabled();
         }
 
-        int ret = this.world.getServer().getCommandManager().handleCommand(source, "forceload " + action + " " + pos.getX() + " " + pos.getZ());
+        int ret = this.world.getServer().getCommands().performCommand(source, "forceload " + action + " " + pos.getX() + " " + pos.getZ());
     }
     /** loads/unloads chunk containing the blockpos */
     private void setforceload(BlockPos pos, Boolean x) {forceload(pos,x?"add":"remove");}
-    private void setforceload(iVec2d pos, Boolean x) {forceload(new BlockPos(pos.x,0,pos.y),x?"add":"remove");}
+    private void setforceload(Vector2i pos, Boolean x) {forceload(new BlockPos(pos.x,0,pos.y),x?"add":"remove");}
 
 
     /**addblock adds chunk containing the blockpos to loaded chunks and to chunkloaderblocks
@@ -67,7 +65,7 @@ public class ChunkLoaderList implements IChunkLoaderList {
     public void addblock(BlockPos pos) {
         if(pos==null){CreateIntegration.logger.debug("pos is null");return;}
         //chunkloaderblocks.add(pos);
-        iVec2d chunk=new iVec2d(pos);
+        Vector2i chunk=new Vector2i(pos);
         chunk.x>>=4;chunk.y>>=4;
         addchunk(chunk);
     }
@@ -78,17 +76,16 @@ public class ChunkLoaderList implements IChunkLoaderList {
     public void removeblock(BlockPos pos) {
         if(pos==null){CreateIntegration.logger.debug("pos is null");return;}
         //chunkloaderblocks.remove(pos);
-        iVec2d chunk=new iVec2d(pos);
+        Vector2i chunk=new Vector2i(pos);
         chunk.x>>=4;chunk.y>>=4;
         removechunk(chunk);
     }
-
 
     /**add adds chunk containing the blockpos to loaded chunks */
     @Override
     public void add(BlockPos pos) {
         if(pos==null){CreateIntegration.logger.debug("pos is null");return;}
-        iVec2d chunk=new iVec2d(pos);
+        Vector2i chunk=new Vector2i(pos);
         chunk.x>>=4;chunk.y>>=4;
         addchunk(chunk);
     }
@@ -97,14 +94,14 @@ public class ChunkLoaderList implements IChunkLoaderList {
     @Override
     public void remove(BlockPos pos) {
         if(pos==null){CreateIntegration.logger.debug("pos is null");return;}
-        iVec2d chunk=new iVec2d(pos);
+        Vector2i chunk=new Vector2i(pos);
         chunk.x>>=4;chunk.y>>=4;
         removechunk(chunk);
     }
 
     /**addchunk adds chunk to loadedchunks and loads chunk if it isn't loaded*/
     @Override
-    public void addchunk(iVec2d chunk){
+    public void addchunk(Vector2i chunk){
         if(chunk==null){CreateIntegration.logger.debug("chunk is null");return;}
         if(!loadedchunks.containsKey(chunk)){//if chunk is not in loaded chunks
             loadedchunks.put(chunk,1);
@@ -113,12 +110,12 @@ public class ChunkLoaderList implements IChunkLoaderList {
             loadedchunks.put(chunk, loadedchunks.get(chunk)+1);}
         CreateIntegration.logger.debug(loadedchunks);
         //CreateIntegration.logger.debug(chunk);
-        //CreateIntegration.logger.debug(new iVec2d(chunk.toLong()));
+        //CreateIntegration.logger.debug(new Vector2i(chunk.toLong()));
     }
 
     /**removechunk removes chunk containing the blockpos from loaded chunks*/
     @Override
-    public void removechunk(iVec2d chunk){
+    public void removechunk(Vector2i chunk){
         Integer i= loadedchunks.get(chunk);
         if(i==null){CreateIntegration.logger.debug("no chunk to remove");return;}
         if(chunk==null){CreateIntegration.logger.debug("chunk is null");return;}
@@ -138,9 +135,9 @@ public class ChunkLoaderList implements IChunkLoaderList {
         enabled = true;
     }
 
-    /** loads all chunks wich are suposed to be loaded */
+    /** loads all chunks which are supposed to be loaded */
     public void reload(){
-        for(iVec2d k: loadedchunks.keySet()) {
+        for(Vector2i k: loadedchunks.keySet()) {
             Integer i= loadedchunks.get(k);
             if(i==null||i==0){
                 loadedchunks.remove(k);
@@ -150,10 +147,6 @@ public class ChunkLoaderList implements IChunkLoaderList {
     }
 
 
-
-
-
-
     public void readFromNBT(CompoundNBT nbt){
         long[] keys=nbt.getLongArray("loadedchunksKeys");
         int[] values=nbt.getIntArray("loadedchunksValues");
@@ -161,11 +154,12 @@ public class ChunkLoaderList implements IChunkLoaderList {
         CreateIntegration.logger.debug(keys);
         for(int i=0;i< keys.length;i++) {
             if(values[i]>0) {//"if" probably not nessesary but saver
-                loadedchunks.put(new iVec2d(keys[i]), values[i]);
-                CreateIntegration.logger.debug((new iVec2d(keys[i])).toString() + " = " + values[i]);
+                loadedchunks.put(new Vector2i(keys[i]), values[i]);
+                CreateIntegration.logger.debug((new Vector2i(keys[i])).toString() + " = " + values[i]);
             }
         }
     }
+
     public CompoundNBT writeToNBT(){
         CompoundNBT nbt=new CompoundNBT();
         long[] keys=new long[loadedchunks.size()];
@@ -173,13 +167,12 @@ public class ChunkLoaderList implements IChunkLoaderList {
         int i=0;
         CreateIntegration.logger.debug("writenbt");
         CreateIntegration.logger.debug(loadedchunks.keySet());
-        for(iVec2d v:loadedchunks.keySet()){
+        for(Vector2i v:loadedchunks.keySet()){
             CreateIntegration.logger.debug(v);
             keys[i]=v.toLong();
             values[i]=loadedchunks.get(v);
             i++;
         }
-
 
         nbt.putLongArray("loadedchunksKeys",keys);
         nbt.putIntArray("loadedchunksValues",values);
@@ -225,46 +218,4 @@ public class ChunkLoaderList implements IChunkLoaderList {
             }
         }*/
     }
-}
-/** 2D int Vektor Class */ //Todo(put in seperate file)
-class iVec2d{
-    public int x;//nicht x=0 da intellij mich sonst nerft
-    public int y;
-    iVec2d(int x,int y){
-        this.x=x;
-        this.y=y;
-    }
-    iVec2d(BlockPos p){ this(p.getX(),p.getZ());}
-
-    iVec2d(long l){//Todo(Test if this really works)
-        this((int)(l>>32),(int)l);
-    }
-
-    public int hashCode() { return (this.y + this.x * 31); }
-    public boolean equals(Object o){
-       if(!(o instanceof iVec2d))return false;
-       else {
-           iVec2d other=(iVec2d)o;
-           return other.x==x && other.y==y;
-       }
-    }
-
-    public int compareTo(iVec2d o) {
-        if(x!=o.x)return x-o.x;
-        else if(y!=o.y)return y-o.y;
-        return 0;
-    }
-    public long toLong(){//Todo(Test if this really works)
-        return ((long)x)<<32 | (y & 0xffffffffL);
-    }
-
-    @Override
-    public String toString() {
-        return "("+x+"|"+y+")";
-    }
-
-    public iVec2d div(int n){return new iVec2d(x/n,y/n);}
-    public iVec2d times(int n){return new iVec2d(x*n,y*n);}
-    public iVec2d plus(iVec2d n){return new iVec2d(x+n.x,y+n.y);}
-    public iVec2d sub(iVec2d n){return new iVec2d(x-n.x,y-n.y);}
 }

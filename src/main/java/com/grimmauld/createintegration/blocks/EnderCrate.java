@@ -11,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
@@ -29,36 +30,37 @@ import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
 public class EnderCrate extends Block implements ITE<EnderCrateTile>, IWrenchable {
 
     public EnderCrate() {
-        super(Properties.from(Blocks.OBSIDIAN));
+        super(Properties.of(Blocks.OBSIDIAN.defaultBlockState().getMaterial()));
         setRegistryName("ender_crate");
     }
 
     @Override
     public BlockState getStateForPlacement(@Nonnull BlockItemUseContext context) {
-        return this.getDefaultState().with(BlockStateProperties.FACING, getFacingFromEntity(context.getPos(), context.getPlayer()));
+        // TODO is setValue correct?
+        return this.defaultBlockState().setValue(BlockStateProperties.FACING, getFacingFromEntity(context.getClickedPos(), context.getPlayer()));
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(BlockStateProperties.FACING, CrateBlock.DOUBLE);
     }
 
-
-    @Nonnull
+    // TODO!
+    /*@Nonnull
     @Override
     public ActionResultType onUse(@Nonnull BlockState state, World world, @Nonnull BlockPos pos, @Nonnull PlayerEntity player, @Nonnull Hand hand,
                                   @Nonnull BlockRayTraceResult result) {
-        if (!(world.isRemote || player.getHeldItemOffhand().getItem().getClass() == WrenchItem.class || player.getHeldItemMainhand().getItem().getClass() == WrenchItem.class)) {
-            TileEntity tileEntity = world.getTileEntity(pos);
+        if (!(!world.isClientSide || player.getOffhandItem().getItem().getClass() == WrenchItem.class || player.getMainHandItem().getItem().getClass() == WrenchItem.class)) {
+            TileEntity tileEntity = world.getBlockEntity(pos);
             if (tileEntity instanceof INamedContainerProvider) {
-                NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getPos());
+                NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getBlockPos());
             } else {
                 throw new IllegalStateException("Ender Container Provider is missing!");
             }
             return ActionResultType.SUCCESS;
         }
         return ActionResultType.PASS;
-    }
+    }*/
 
     @Override
     public boolean hasTileEntity(BlockState state) {

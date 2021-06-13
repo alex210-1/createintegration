@@ -7,8 +7,8 @@ import net.minecraft.item.ItemStack;
 public class ModSetup {
     public static ItemGroup itemGroup = new ItemGroup("createintegration") {
         @Override
-        public ItemStack createIcon() {
-            return new ItemStack(ModBlocks.DYNAMO);
+        public ItemStack makeIcon() {
+            return new ItemStack(ModBlocks.CHUNK_LOADER);
         }
     };
 

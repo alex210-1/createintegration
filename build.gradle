@@ -153,8 +153,8 @@ dependencies {
     // implementation fg.deobf("mezz.jei:jei-1.15.2:6.0.0.4")
     // implementation fg.deobf("curse.maven:create:3278516")
 
-    // compile 'curse.maven:jei-238222:3157864'
-    compile 'curse.maven:create-328085:3278516'
+    // compile 'curse.maven:jei-238222:3346971'
+    implementation fg.deobf('curse.maven:create-328085:3278516')
 }
 
 jar {

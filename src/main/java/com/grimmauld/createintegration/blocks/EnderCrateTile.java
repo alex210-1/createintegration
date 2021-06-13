@@ -56,8 +56,8 @@ public class EnderCrateTile extends SmartTileEntity implements INamedContainerPr
     }
 
     public void updateItemHandler() {
-        if (world == null) return;
-        world
+        if (level == null) return;
+        level
                 .getCapability(CreateIntegration.ENDER_CRATE_CAPABILITY,
                         null)
                 .ifPresent(worldCap ->
@@ -78,25 +78,25 @@ public class EnderCrateTile extends SmartTileEntity implements INamedContainerPr
         return super.getCapability(cap, side);
     }
 
-    public void read(CompoundNBT tag) {
+    /*public void read(CompoundNBT tag) {
         super.read(tag);
         int v = tag.getInt("ender_id");
         id.value = v;
         id.scrollableValue = v;
         id.setValue(v);
         updateItemHandler();
-    }
+    }*/
 
     @Override
-    public CompoundNBT write(CompoundNBT tag) {
+    public void write(CompoundNBT tag, boolean clientPacket) {
         tag.putInt("ender_id", id.getValue());
-        return super.write(tag);
+        super.write(tag, clientPacket);
     }
 
     @Override
     public void addBehaviours(List<TileEntityBehaviour> behaviours) {
         CenteredSideValueBoxTransform slot =
-                new CenteredSideValueBoxTransform((ender_crate, side) -> ender_crate.get(BlockStateProperties.FACING) == side);
+                new CenteredSideValueBoxTransform((ender_crate, side) -> ender_crate.getValue(BlockStateProperties.FACING) == side);
 
         id = new ScrollValueBehaviour(Lang.translate("generic.ender_id"), this, slot);
         id.between(0, 256);
@@ -114,10 +114,9 @@ public class EnderCrateTile extends SmartTileEntity implements INamedContainerPr
     @Nullable
     @Override
     public Container createMenu(int id, @Nonnull PlayerInventory playerInventory, @Nonnull PlayerEntity player) {
-        assert world != null;
-        return new EnderContainer(id, world, pos, playerInventory);
+        assert level != null;
+        return new EnderContainer(id, level, worldPosition, playerInventory);
     }
-
 
     @Nonnull
     @Override
@@ -137,10 +136,11 @@ public class EnderCrateTile extends SmartTileEntity implements INamedContainerPr
     @Nonnull
     @Override
     public TileEntityType<?> getType() {
-        if (Create.VERSION.equals("0.2.4") && Thread.currentThread().getStackTrace()[2].toString().contains("com.simibubi.create.repack.registrate.util.entry.TileEntityEntry.is")) {
-            return AllTileEntities.ADJUSTABLE_CRATE.get();  // hack!
-        } else {
-            return super.getType();
-        }
+        return super.getType();
+    }
+
+    @Override
+    public void tick() {
+        // TODO do i have to do anything here?
     }
 }

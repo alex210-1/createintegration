@@ -54,7 +54,7 @@ public class EnderList implements IEnderList {
         public void readNBT(Capability<EnderList> capability, EnderList instance, Direction side, INBT nbt) {
             if (!(nbt instanceof CompoundNBT)) return;
             CompoundNBT tag = (CompoundNBT) nbt;
-            for (String id : tag.keySet()) {
+            for (String id : tag.getAllKeys()) {
                 try {
                     instance.getOrCreate(Integer.parseInt(id)).ifPresent(h -> ModUtil.safeNBTCast(h).deserializeNBT(tag.getCompound(id)));
                 } finally {

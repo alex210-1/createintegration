@@ -3,6 +3,7 @@ package com.grimmauld.createintegration.blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.IContainerListener;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IWorldPosCallable;
@@ -22,7 +23,7 @@ public class EnderContainer extends Container {
 
     public EnderContainer(int windowId, World world, BlockPos pos, PlayerInventory playerInventory) {
         super(ModBlocks.ENDER_CONTAINER, windowId);
-        tileEntity = (EnderCrateTile) world.getTileEntity(pos);
+        tileEntity = (EnderCrateTile) world.getBlockEntity(pos);
         this.playerInventory = new InvWrapper(playerInventory);
 
 
@@ -43,11 +44,12 @@ public class EnderContainer extends Container {
     }
 
 
-    @Override
+    // TODO
+    /*@Override
     @ParametersAreNonnullByDefault
     public boolean canInteractWith(PlayerEntity playerIn) {
         return tileEntity.getWorld() == null || isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), playerIn, ModBlocks.ENDER_CRATE);
-    }
+    }*/
 
 
     private int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {
@@ -76,7 +78,8 @@ public class EnderContainer extends Container {
         addSlotRange(playerInventory, 0, leftCol, topRow, 9, 18);
     }
 
-    @Nonnull
+    // TODO
+    /* @Nonnull
     @Override
     @ParametersAreNonnullByDefault
     public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
@@ -107,5 +110,10 @@ public class EnderContainer extends Container {
         }
 
         return itemstack;
+    }*/
+
+    @Override
+    public boolean stillValid(PlayerEntity p_75145_1_) {
+        return true; // TODO
     }
 }
