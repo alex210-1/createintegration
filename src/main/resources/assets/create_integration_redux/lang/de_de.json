@@ -1,0 +1,6 @@
+{
+  "block.create_integration_redux.chunk_loader": "Chunk Loader",
+  "block.create_integration_redux.ender_crate": "Bewegliche Ender-Kiste",
+  "itemGroup.create_integration_redux": "Create Integration",
+  "create_integration_redux.generic.ender_id": "Ender ID"
+}

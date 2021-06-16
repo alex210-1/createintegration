@@ -50,12 +50,12 @@ public class ChunkLoader extends KineticBlock {
 
     @Override
     public Direction.Axis getRotationAxis(BlockState blockState) {
-        return null;
+        return Direction.Axis.Y;
     }
 
     @Override
     public SpeedLevel getMinimumRequiredSpeedLevel() {
-        return null;
+        return SpeedLevel.NONE;
     }
 
     @Override

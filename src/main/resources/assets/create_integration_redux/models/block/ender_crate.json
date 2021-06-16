@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "create_integration_redux:block/ender_casing",
+    "down": "create_integration_redux:block/ender_casing",
+    "up": "create_integration_redux:block/ender_casing",
+    "east": "create_integration_redux:block/ender_crate_side",
+    "west": "create_integration_redux:block/ender_crate_side",
+    "north": "create_integration_redux:block/ender_crate_side",
+    "south": "create_integration_redux:block/ender_crate_side"
+  }
+}

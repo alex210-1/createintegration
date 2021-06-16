@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "create_integration_redux:block/chunk_loader"
+    }
+  }
+}
