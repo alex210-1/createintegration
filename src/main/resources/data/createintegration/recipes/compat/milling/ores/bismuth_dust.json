@@ -8,7 +8,7 @@
       }
     }
   ],
-  "type": "createintegration:tagtotagmilling",
+  "type": "create_integration_redux:tagtotagmilling",
   "ingredients": [
     {
       "tag": "forge:ores/bismuth"

@@ -1,10 +1,10 @@
 {
-  "type": "createintegration:rolling",
+  "type": "create_integration_redux:rolling",
   "input": {
     "tag": "forge:ingots/brass"
   },
   "output": {
-    "item": "createintegration:brass_pressure_plate"
+    "item": "create_integration_redux:brass_pressure_plate"
   },
   "duration": 200
 }

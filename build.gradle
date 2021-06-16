@@ -61,7 +61,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                createintegration {
+                create_integration_redux {
                     source sourceSets.main
                 }
             }
@@ -83,7 +83,7 @@ minecraft {
             property 'forge.logging.console.level', 'info'
 
             mods {
-                createintegration {
+                create_integration_redux {
                     source sourceSets.main
                 }
             }
@@ -105,10 +105,10 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-            args '--mod', 'createintegration', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'create_integration_redux', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                createintegration {
+                create_integration_redux {
                     source sourceSets.main
                 }
             }
@@ -169,7 +169,7 @@ dependencies {
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "createintegrationredux",
+                "Specification-Title"     : "create_integration_redux",
                 "Specification-Vendor"    : "bytearray",
                 "Specification-Version"   : "1",
                 "Implementation-Title"    : project.name,
@@ -186,7 +186,7 @@ jar.finalizedBy('reobfJar')
 // However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
 // publish.dependsOn('reobfJar')
 
-publishing {
+/*publishing {
     publications {
         mavenJava(MavenPublication) {
             artifact jar
@@ -197,4 +197,4 @@ publishing {
             url "file:///${project.projectDir}/mcmodsrepo"
         }
     }
-}
+}*/

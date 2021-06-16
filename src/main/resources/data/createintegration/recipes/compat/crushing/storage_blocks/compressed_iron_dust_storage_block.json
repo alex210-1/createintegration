@@ -8,7 +8,7 @@
       }
     }
   ],
-  "type": "createintegration:tagtotagcrushing",
+  "type": "create_integration_redux:tagtotagcrushing",
   "ingredients": [
     {
       "tag": "forge:storage_blocks/compressed_iron"

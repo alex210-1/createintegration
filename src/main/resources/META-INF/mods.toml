@@ -2,27 +2,28 @@ modLoader="javafml"
 loaderVersion="[36,)"
 issueTrackerURL="https://github.com/LordGrimmauld/createintegration/issues"
 logoFile="createintegration_logo.png"
+license="MIT"
 [[mods]]
-modId="create-integration-redux"
+modId="create_integration_redux"
 version="0.1.0"
 displayName="Create Integration Redux"
 displayURL=""
 credits="Thanks to Grimmauld for the original mod"
 authors="bytearray"
 description='''This is a stripped down version of the create integration mod for 1.16.5'''
-[[dependencies.createintegration]] #optional
+[[dependencies.create_integration_redux]] #optional
     modId="forge" #mandatory
     mandatory=true #mandatory
     versionRange="[36,)" #mandatory
     ordering="NONE"
     side="BOTH"
-[[dependencies.createintegration]]
+[[dependencies.create_integration_redux]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.16.5,1.17)" #keep updated
     ordering="NONE"
     side="BOTH"
-[[dependencies.createintegration]]
+[[dependencies.create_integration_redux]]
     modId="create"
     mandatory=true
     versionRange="[mc1.16.5_v0.3.1,)" #keep updated

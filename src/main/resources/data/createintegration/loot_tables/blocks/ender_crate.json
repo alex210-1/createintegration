@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "createintegration:ender_crate"
+          "name": "create_integration_redux:ender_crate"
         }
       ],
       "conditions": [

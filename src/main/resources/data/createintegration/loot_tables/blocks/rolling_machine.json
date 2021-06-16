@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "createintegration:rolling_machine"
+          "name": "create_integration_redux:rolling_machine"
         }
       ],
       "conditions": [

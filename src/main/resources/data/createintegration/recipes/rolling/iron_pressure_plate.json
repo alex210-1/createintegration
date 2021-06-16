@@ -1,5 +1,5 @@
 {
-  "type": "createintegration:rolling",
+  "type": "create_integration_redux:rolling",
   "input": {
     "item": "minecraft:iron_ingot"
   },

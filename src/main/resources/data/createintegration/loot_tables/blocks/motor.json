@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "createintegration:motor"
+          "name": "create_integration_redux:motor"
         }
       ],
       "conditions": [

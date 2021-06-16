@@ -56,7 +56,7 @@ import java.util.Map;
 
 @Mod(CreateIntegration.modid)
 public class CreateIntegration {
-    public static final String modid = "createintegration";
+    public static final String modid = "create_integration_redux";
     @SuppressWarnings("unused")
     public static final String version = "0.1.8";
     public static final Logger logger = LogManager.getLogger(modid);

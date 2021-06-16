@@ -1,10 +1,10 @@
 {
-  "type": "createintegration:rolling",
+  "type": "create_integration_redux:rolling",
   "input": {
     "tag": "forge:ingots/copper"
   },
   "output": {
-    "item": "createintegration:copper_pressure_plate"
+    "item": "create_integration_redux:copper_pressure_plate"
   },
   "duration": 200
 }

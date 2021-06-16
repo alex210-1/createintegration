@@ -8,7 +8,7 @@
       }
     }
   ],
-  "type": "createintegration:tagtotagpressing",
+  "type": "create_integration_redux:tagtotagpressing",
   "ingredients": [
     {
       "tag": "forge:ingots/hop_graphite"

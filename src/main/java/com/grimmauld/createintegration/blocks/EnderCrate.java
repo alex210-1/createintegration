@@ -30,18 +30,17 @@ import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
 public class EnderCrate extends Block implements ITE<EnderCrateTile>, IWrenchable {
 
     public EnderCrate() {
-        super(Properties.of(Blocks.OBSIDIAN.defaultBlockState().getMaterial()));
+        super(Properties.from(Blocks.OBSIDIAN));
         setRegistryName("ender_crate");
     }
 
     @Override
     public BlockState getStateForPlacement(@Nonnull BlockItemUseContext context) {
-        // TODO is setValue correct?
-        return this.defaultBlockState().setValue(BlockStateProperties.FACING, getFacingFromEntity(context.getClickedPos(), context.getPlayer()));
+        return this.getDefaultState().with(BlockStateProperties.FACING, getFacingFromEntity(context.getPos(), context.getPlayer()));
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(BlockStateProperties.FACING, CrateBlock.DOUBLE);
     }
 

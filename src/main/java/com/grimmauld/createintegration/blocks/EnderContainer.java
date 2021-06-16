@@ -23,7 +23,7 @@ public class EnderContainer extends Container {
 
     public EnderContainer(int windowId, World world, BlockPos pos, PlayerInventory playerInventory) {
         super(ModBlocks.ENDER_CONTAINER, windowId);
-        tileEntity = (EnderCrateTile) world.getBlockEntity(pos);
+        tileEntity = (EnderCrateTile) world.getTileEntity(pos);
         this.playerInventory = new InvWrapper(playerInventory);
 
 
@@ -112,8 +112,13 @@ public class EnderContainer extends Container {
         return itemstack;
     }*/
 
-    @Override
+    /*@Override
     public boolean stillValid(PlayerEntity p_75145_1_) {
         return true; // TODO
+    }*/
+
+    @Override
+    public boolean canInteractWith(PlayerEntity playerIn) {
+        return true;
     }
 }

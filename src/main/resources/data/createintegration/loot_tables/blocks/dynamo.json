@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "createintegration:dynamo"
+          "name": "create_integration_redux:dynamo"
         }
       ],
       "conditions": [
