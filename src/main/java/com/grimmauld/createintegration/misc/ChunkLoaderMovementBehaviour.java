@@ -11,7 +11,7 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
 
     @Override
     public void visitNewPosition(MovementContext context, BlockPos pos) {
-        if (!context.world.isClientSide)return;
+        if (context.world.isRemote)return;
 
         Vector2i chunknew = new Vector2i(pos);
         chunknew.x >>= 4; //converts position to chunk

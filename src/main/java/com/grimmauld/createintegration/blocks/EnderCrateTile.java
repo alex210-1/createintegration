@@ -56,8 +56,8 @@ public class EnderCrateTile extends SmartTileEntity implements INamedContainerPr
     }
 
     public void updateItemHandler() {
-        if (level == null) return;
-        level
+        if (world == null) return;
+        world
                 .getCapability(CreateIntegration.ENDER_CRATE_CAPABILITY,
                         null)
                 .ifPresent(worldCap ->
@@ -96,7 +96,7 @@ public class EnderCrateTile extends SmartTileEntity implements INamedContainerPr
     @Override
     public void addBehaviours(List<TileEntityBehaviour> behaviours) {
         CenteredSideValueBoxTransform slot =
-                new CenteredSideValueBoxTransform((ender_crate, side) -> ender_crate.getValue(BlockStateProperties.FACING) == side);
+                new CenteredSideValueBoxTransform((ender_crate, side) -> ender_crate.get(BlockStateProperties.FACING) == side);
 
         id = new ScrollValueBehaviour(Lang.translate("generic.ender_id"), this, slot);
         id.between(0, 256);
@@ -114,8 +114,8 @@ public class EnderCrateTile extends SmartTileEntity implements INamedContainerPr
     @Nullable
     @Override
     public Container createMenu(int id, @Nonnull PlayerInventory playerInventory, @Nonnull PlayerEntity player) {
-        assert level != null;
-        return new EnderContainer(id, level, worldPosition, playerInventory);
+        assert world != null;
+        return new EnderContainer(id, world, pos, playerInventory);
     }
 
     @Nonnull

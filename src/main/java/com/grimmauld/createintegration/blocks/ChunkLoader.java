@@ -6,6 +6,8 @@ import com.simibubi.create.content.contraptions.base.KineticBlock;
 import com.simibubi.create.content.contraptions.components.structureMovement.MovementBehaviour;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -17,14 +19,14 @@ public class ChunkLoader extends KineticBlock {
 
 
     public ChunkLoader() {
-        super(Properties.of(Blocks.BEACON.defaultBlockState().getMaterial()));
+        super(Properties.from(Blocks.BEACON));
         setRegistryName("chunk_loader");
     }
 
     @Override
-    public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         // TODO not sure if correct
-        if (!worldIn.isClientSide()) return;
+        if (worldIn.isRemote()) return;
         worldIn.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.addblock(pos));
     }
 
