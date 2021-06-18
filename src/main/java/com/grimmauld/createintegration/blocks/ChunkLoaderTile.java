@@ -5,18 +5,19 @@ import com.grimmauld.createintegration.CreateIntegration;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
-public class ChunkLoaderTile extends TileEntity implements ITickableTileEntity {
+public class ChunkLoaderTile extends TileEntity {
     public ChunkLoaderTile() {
         super(ModBlocks.CHUNK_LOADER_TILE);
-        //world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.addchunk(pos));
+        // TODO block does not get added on initial load, apparently
+        super.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null)
+                .ifPresent(cap -> cap.addblock(pos));
     }
-    @Override
-    public void tick() {}
 
     @Override
     public void remove() {
-        //TODO(remove tile entity)
+        //TODO(remove tile entity???)
         super.remove();
-        world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.removeblock(pos));
+        super.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null)
+                .ifPresent(cap -> cap.removeblock(pos));
     }
 }

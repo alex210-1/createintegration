@@ -58,7 +58,7 @@ public class ChunkLoaderList implements IChunkLoaderList {
     private void setforceload(Vector2i pos, Boolean x) {forceload(new BlockPos(pos.x,0,pos.y),x?"add":"remove");}
 
 
-    /**addblock adds chunk containing the blockpos to loaded chunks and to chunkloaderblocks
+    /**addblock adds chunk containing the blockpos to loaded chunks (and to chunkloaderblocks???)
      * use to add a normal chunkloader (not in minecart)*/
     @Override
     public void addblock(BlockPos pos) {
@@ -69,7 +69,7 @@ public class ChunkLoaderList implements IChunkLoaderList {
         addchunk(chunk);
     }
 
-    /**removeblock removes chunk containing the blockpos from loaded chunks and from chunkloaderblocks
+    /**removeblock removes chunk containing the blockpos from loaded chunks (and from chunkloaderblocks???)
      * use to remove a normal chunkloader (not in minecart)*/
     @Override
     public void removeblock(BlockPos pos) {
@@ -108,7 +108,7 @@ public class ChunkLoaderList implements IChunkLoaderList {
         }else{
             loadedchunks.put(chunk, loadedchunks.get(chunk)+1);}
         CreateIntegration.logger.debug(loadedchunks);
-        //CreateIntegration.logger.debug(chunk);
+        CreateIntegration.logger.info("loaded chunk: " + chunk);
         //CreateIntegration.logger.debug(new Vector2i(chunk.toLong()));
     }
 
