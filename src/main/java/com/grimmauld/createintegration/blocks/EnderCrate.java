@@ -27,7 +27,7 @@ import javax.annotation.Nonnull;
 
 import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
 
-public class EnderCrate extends Block implements ITE<EnderCrateTile>, IWrenchable {
+public class EnderCrate extends Block implements ITE<EnderCrateTile> {
 
     public EnderCrate() {
         super(Properties.from(Blocks.OBSIDIAN));
@@ -44,22 +44,21 @@ public class EnderCrate extends Block implements ITE<EnderCrateTile>, IWrenchabl
         builder.add(BlockStateProperties.FACING, CrateBlock.DOUBLE);
     }
 
-    // TODO!
-    /*@Nonnull
+    @Nonnull
     @Override
     public ActionResultType onUse(@Nonnull BlockState state, World world, @Nonnull BlockPos pos, @Nonnull PlayerEntity player, @Nonnull Hand hand,
                                   @Nonnull BlockRayTraceResult result) {
-        if (!(!world.isClientSide || player.getOffhandItem().getItem().getClass() == WrenchItem.class || player.getMainHandItem().getItem().getClass() == WrenchItem.class)) {
-            TileEntity tileEntity = world.getBlockEntity(pos);
+        if (!(world.isRemote || player.getHeldItemOffhand().getItem().getClass() == WrenchItem.class || player.getHeldItemMainhand().getItem().getClass() == WrenchItem.class)) {
+            TileEntity tileEntity = world.getTileEntity(pos);
             if (tileEntity instanceof INamedContainerProvider) {
-                NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getBlockPos());
+                NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getPos());
             } else {
                 throw new IllegalStateException("Ender Container Provider is missing!");
             }
             return ActionResultType.SUCCESS;
         }
         return ActionResultType.PASS;
-    }*/
+    }
 
     @Override
     public boolean hasTileEntity(BlockState state) {

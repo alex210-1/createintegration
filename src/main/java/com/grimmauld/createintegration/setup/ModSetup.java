@@ -5,7 +5,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 
 public class ModSetup {
-    public static ItemGroup itemGroup = new ItemGroup("createintegration") {
+    public static ItemGroup itemGroup = new ItemGroup("create_integration_redux") {
         @Override
         public ItemStack createIcon() {
             return new ItemStack(ModBlocks.CHUNK_LOADER);

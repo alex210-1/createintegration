@@ -43,14 +43,11 @@ public class EnderContainer extends Container {
         return tileEntity.getId();
     }
 
-
-    // TODO
-    /*@Override
+    @Override
     @ParametersAreNonnullByDefault
     public boolean canInteractWith(PlayerEntity playerIn) {
         return tileEntity.getWorld() == null || isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), playerIn, ModBlocks.ENDER_CRATE);
-    }*/
-
+    }
 
     private int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {
         for (int i = 0; i < amount; i++) {
@@ -78,8 +75,7 @@ public class EnderContainer extends Container {
         addSlotRange(playerInventory, 0, leftCol, topRow, 9, 18);
     }
 
-    // TODO
-    /* @Nonnull
+    @Nonnull
     @Override
     @ParametersAreNonnullByDefault
     public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
@@ -110,15 +106,10 @@ public class EnderContainer extends Container {
         }
 
         return itemstack;
-    }*/
+    }
 
     /*@Override
     public boolean stillValid(PlayerEntity p_75145_1_) {
         return true; // TODO
     }*/
-
-    @Override
-    public boolean canInteractWith(PlayerEntity playerIn) {
-        return true;
-    }
 }

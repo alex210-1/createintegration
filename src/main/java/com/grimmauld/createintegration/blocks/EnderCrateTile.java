@@ -2,12 +2,11 @@ package com.grimmauld.createintegration.blocks;
 
 import com.grimmauld.createintegration.CreateIntegration;
 import com.grimmauld.createintegration.tools.Lang;
-import com.simibubi.create.AllTileEntities;
-import com.simibubi.create.Create;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.CenteredSideValueBoxTransform;
 import com.simibubi.create.foundation.tileEntity.behaviour.scrollvalue.ScrollValueBehaviour;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -58,10 +57,14 @@ public class EnderCrateTile extends SmartTileEntity implements INamedContainerPr
     public void updateItemHandler() {
         if (world == null) return;
         world
-                .getCapability(CreateIntegration.ENDER_CRATE_CAPABILITY,
-                        null)
-                .ifPresent(worldCap ->
-                        setItemHandler(worldCap.getOrCreate(id.getValue())));
+                .getCapability(CreateIntegration.ENDER_CRATE_CAPABILITY,null)
+                .ifPresent(enderList ->
+                        setItemHandler(enderList.getOrCreate(id.getValue()))
+                );
+    }
+
+    private void onChannelChange(Integer integer) {
+        updateItemHandler();
     }
 
     private void setItemHandler(LazyOptional<IItemHandler> itemHandler) {
@@ -78,14 +81,16 @@ public class EnderCrateTile extends SmartTileEntity implements INamedContainerPr
         return super.getCapability(cap, side);
     }
 
-    /*public void read(CompoundNBT tag) {
-        super.read(tag);
-        int v = tag.getInt("ender_id");
+    @Override
+    protected void fromTag(BlockState state, CompoundNBT compound, boolean clientPacket) {
+        super.fromTag(state, compound, clientPacket);
+
+        int v = compound.getInt("ender_id");
         id.value = v;
         id.scrollableValue = v;
         id.setValue(v);
         updateItemHandler();
-    }*/
+    }
 
     @Override
     public void write(CompoundNBT tag, boolean clientPacket) {
@@ -98,17 +103,14 @@ public class EnderCrateTile extends SmartTileEntity implements INamedContainerPr
         CenteredSideValueBoxTransform slot =
                 new CenteredSideValueBoxTransform((ender_crate, side) -> ender_crate.get(BlockStateProperties.FACING) == side);
 
-        id = new ScrollValueBehaviour(Lang.translate("generic.ender_id"), this, slot);
-        id.between(0, 256);
+        id = new ScrollValueBehaviour(Lang.translate("generic.ender_id"), this, slot)
+            .between(0, 256)
+            .withStepFunction(EnderCrateTile::step)
+            .withCallback(this::onChannelChange);
+
         id.value = 0;
         id.scrollableValue = 0;
-        id.withStepFunction(EnderCrateTile::step);
-        id.withCallback(this::updateItemHandler);
         behaviours.add(id);
-    }
-
-    private void updateItemHandler(Integer integer) {
-        updateItemHandler();
     }
 
     @Nullable
@@ -121,7 +123,7 @@ public class EnderCrateTile extends SmartTileEntity implements INamedContainerPr
     @Nonnull
     @Override
     public ITextComponent getDisplayName() {
-        return new StringTextComponent(getType().getRegistryName() != null ? getType().getRegistryName().getPath() : "createintegration:ender_crate");  // Lang File ?
+        return new StringTextComponent(getType().getRegistryName() != null ? getType().getRegistryName().getPath() : "create_integration_redux:ender_crate");  // Lang File ?
     }
 
     public int getId() {
@@ -137,10 +139,5 @@ public class EnderCrateTile extends SmartTileEntity implements INamedContainerPr
     @Override
     public TileEntityType<?> getType() {
         return super.getType();
-    }
-
-    @Override
-    public void tick() {
-        // TODO do i have to do anything here?
     }
 }

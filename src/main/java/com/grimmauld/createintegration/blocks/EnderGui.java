@@ -3,6 +3,7 @@ package com.grimmauld.createintegration.blocks;
 import com.grimmauld.createintegration.CreateIntegration;
 import com.grimmauld.createintegration.tools.Lang;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
@@ -29,12 +30,12 @@ public class EnderGui extends ContainerScreen<EnderContainer> {
 
     @Override
     protected void drawBackground(MatrixStack matrixStack, float p_230450_2_, int p_230450_3_, int p_230450_4_) {
-        // GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        /*assert this.minecraft != null;
-        this.minecraft.getTextureManager().bindTexture(GUI);
+        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        assert this.getMinecraft() != null;
+        this.getMinecraft().getTextureManager().bindTexture(GUI);
         int relX = (this.width - this.xSize) / 2;
         int relY = (this.height - this.ySize) / 2;
-        this.blit(matrixStack, relX, relY, 0, 0, this.xSize, this.ySize);*/
+        this.drawTexture(matrixStack, relX, relY, 0, 0, this.xSize, this.ySize);
     }
 
     @Override
