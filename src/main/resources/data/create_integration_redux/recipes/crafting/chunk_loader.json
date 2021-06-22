@@ -1,16 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " # ",
-    "#B#",
-    " # "
+    "#R#",
+    "ROR",
+    "#R#"
   ],
   "key": {
     "#": {
+      "item": "minecraft:glass"
+    },
+    "R": {
       "item": "minecraft:emerald"
     },
-    "B": {
-      "item": "minecraft:beacon"
+    "O": {
+      "item": "minecraft:ender_eye"
     }
   },
   "result": {

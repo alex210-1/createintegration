@@ -1,19 +1,25 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "#E#",
+    "#C#",
     "EDE",
-    "#E#"
+    "#S#"
   ],
   "key": {
-    "#": {
-      "item": "create:brass_casing"
+    "S": {
+      "item": "minecraft:shulker_box"
+    },
+    "C": {
+      "item": "minecraft:chorus_flower"
     },
     "E": {
       "item": "minecraft:end_stone"
     },
     "D": {
       "item": "minecraft:ender_chest"
+    },
+    "#": {
+      "item": "create:shadow_steel_casing"
     }
   },
   "result": {
